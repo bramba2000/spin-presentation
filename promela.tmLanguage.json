@@ -1,0 +1,117 @@
+{
+  "fileTypes": [
+    "pml",
+    "promela"
+  ],
+  "name": "Promela",
+  "patterns": [
+    {
+      "begin": "\\/\\*",
+      "comment": "Block comment",
+      "end": "\\*\\/",
+      "name": "comment.block"
+    },
+    {
+      "comment": "flow control",
+      "match": "\\b(assert|else|fi|if|unless|xr|xs|do|od|break|skip|atomic|d_step|goto|for|in)\\b",
+      "name": "keyword.control"
+    },
+    {
+      "comment": "operators",
+      "match": "\\b(run)\\b",
+      "name": "keyword.operator"
+    },
+    {
+      "captures": {
+        "2": {
+          "name": "keyword.operator"
+        },
+        "3": {
+          "name": "entity.name.function"
+        }
+      },
+      "comment": "defines",
+      "match": "^(#)\\s*(define)\\s*([a-zA-Z_]+[0-9a-zA-Z_]*)"
+    },
+    {
+      "comment": "label (as in goto)",
+      "match": "\\b[a-zA-Z_]+[0-9a-zA-Z_]*(\\s)*:",
+      "name": "variable.other"
+    },
+    {
+      "comment": "built-in functions",
+      "match": "\\b(printf|len|empty|nempty|full|nfull|enabled|eval|pc_value)\\b",
+      "name": "entity.name.function"
+    },
+    {
+      "begin": "\\b([a-zA-Z_]+[0-9a-zA-Z_]*)\\(",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function"
+        }
+      },
+      "comment": "function calls",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "$self"
+        }
+      ]
+    },
+    {
+      "begin": "\\b(ltl)(\\s)+([a-zA-Z_]+[0-9a-zA-Z_]*)(\\s)*{",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.type"
+        },
+        "3": {
+          "name": "entity.name.function"
+        }
+      },
+      "comment": "ltls",
+      "end": "}",
+      "patterns": [
+        {
+          "include": "$self"
+        }
+      ]
+    },
+    {
+      "comment": "string",
+      "match": "\"([^\\\\\"]|\\\\.)*\"",
+      "name": "string.quoted.double"
+    },
+    {
+      "comment": "integer",
+      "match": "\\b([0-9])+\\b",
+      "name": "constant.numeric"
+    },
+    {
+      "comment": "true and false",
+      "match": "\\b(true|false|TRUE|FALSE)\\b",
+      "name": "constant.language"
+    },
+    {
+      "comment": "type",
+      "match": "\\b(bit|bool|byte|pid|chan|int|mtype|proctype|short|unsigned|D_proctype)\\b",
+      "name": "storage.type"
+    },
+    {
+      "comment": "modifiers",
+      "match": "\\b(hidden|init|inline|active|local|show|of)\\b",
+      "name": "storage.modifier"
+    },
+    {
+      "comment": "I don't know where to put these",
+      "match": "\\b(typedef|c_state)\\b",
+      "name": "storage.modifier"
+    },
+    {
+      "comment": "Line comment",
+      "match": "\\/\\/.*$",
+      "name": "comment.double-slash"
+    }
+  ],
+  "scopeName": "source.promela",
+  "uuid": "fa220c5d-0ad5-4a52-8027-37e13443b1fc"
+}

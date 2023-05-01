@@ -1,0 +1,25 @@
+name: Deploy pages
+on: push
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Install exporting dependencies
+        run: npm i -D playwright-chromium
+      - name: Install slidev
+        run:  npm i -g @slidev/cli
+      - name: Build
+        run: slidev build --base spin
+      - name: Deploy pages
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          build_dir: dist
+          target_branch: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
