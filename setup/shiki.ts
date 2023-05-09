@@ -8,7 +8,7 @@ export default defineShikiSetup(() => {
   return {
     theme: {
       dark: 'min-dark',
-      light: 'min-light',
+      light: 'nord',
     },
     langs: [{
       id: 'promela',
