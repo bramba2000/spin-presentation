@@ -447,3 +447,63 @@ wait_ack:
 
 </div>
 </v-click>
+
+---
+---
+# LTL formula
+```promela
+    ltl ::= opd | ( ltl ) | ltl binop ltl | unop ltl
+```
+<v-clicks>
+
+- `opd` is an operand
+- `unop` is a unary operator
+    - `[]` is the **globally** operator $\square$
+    - `<>` is the **eventually** operator $\diamond$
+    - `!` is the **negation** operator$\neg$
+
+</v-clicks>
+---
+hideInToc: true
+---
+
+# LTL formula
+```promela
+    ltl ::= opd | ( ltl ) | ltl binop ltl | unop ltl
+```
+
+- `opd` is an operand
+- `unop` is a unary operator
+- `binop` is a binary operator
+    - `U` is the temporal operator **strong until**
+	- `W`	is the temporal operator **weak until** (only when used in inline formula)
+	- `V` is the dual of U: `(p V q)` means `!(!p U !q)`
+	- `&&` or `/\` is the **logical and** operator
+	- `||` or `\/` is the **logical or** operator
+	- `->`	is the logical **implication** operator
+	- `<->`	is the logical **equivalence** operator
+
+---
+---
+
+# LTL usage
+A *ltl* property should be declared in global scope, like a global variable 
+
+```promela
+    ltl [name] { formula };
+```
+<br>
+<v-click>
+
+```promela
+    ltl p { [] b }; // b always true
+
+    bool b = true;
+    active proctype main() {
+        printf("hello world!\n");
+        b = false;
+    }
+
+```
+
+</v-click>
