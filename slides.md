@@ -121,7 +121,7 @@ layout: center
 class: "text-center"
 ---
 
-# Modelling behaviour
+# Modelling behavior
 ---
 
 ## Processes
@@ -358,8 +358,8 @@ class: "text-center"
 ---
 
 # Synchronization concepts
----
 
+---
 ---
 
 ## Atomic blocks
