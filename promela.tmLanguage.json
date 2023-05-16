@@ -13,7 +13,7 @@
     },
     {
       "comment": "flow control",
-      "match": "\\b(assert|else|fi|if|unless|xr|xs|do|od|break|skip|atomic|d_step|goto|for|in)\\b",
+      "match": "\\b(assert|else|fi|if|unless|xr|xs|do|od|break|skip|atomic|d_step|goto|for|in|then|add)\\b",
       "name": "keyword.control"
     },
     {

@@ -5,6 +5,7 @@ coverAuthor: Matteo Brambilla - Paolo Cerutti - Carlo Chiodaroli
 css: unocss
 download: true
 highlighter: shiki
+hideInToc: true
 ---
 
 # SPIN
@@ -18,11 +19,85 @@ hideInToc: true
 # What are we going to see?
 
 ---
+---
+# SPIN
+
+Promela-based tool for analyzing the logical consistency of **concurrent systems**, specifically data communication protocols
+<v-clicks>
+
+- automatically verify whether `M ⊨ φ` holds, where `M` is a (finite-state) model of a system and property `φ` is stated in some formal notation.
+- Can be used via command line or via iSpin
+</v-clicks>
+<v-click>
+
+With SPIN one may check the following type of properties:
+</v-click>
+<v-clicks>
+
+- deadlocks (invalid end-states)
+- assertions
+- unreachable code
+- LTL formulae
+- safety and liveness properties
+    - non-progress cycles (live-locks)
+    - acceptance cycles
+</v-clicks>
+---
+---
+# Verification Algorithm
+
+SPIN uses a **depth first search algorithm** (DFS) to generate and explore the **complete state space**.
+<v-click>
+
+In simple terms:
+```promela
+procedure dfs(s: state)
+    if error(s) then report error
+    add s to stateSpace                         //stateSpace is an hashtable of states
+    foreach successor t of s do
+        if t not in stateSpace then dfs(t)
+end dfs
+```
+
+Construction and error checking happen at the same time, this allows SPIN to be an **on-the-fly** model checker.
+</v-click>
+<v-click>
+
+SPIN then builds a Büchi automaton from the negated LTL formula and from the state space, and checks whether the intersection of the two is empty.
+
+If so, the property holds. 
+</v-click>
+<v-click>
+
+SPIN also has the possibility to use breath first search (BFS) to explore the state space which generates shorter counterexamples but increases the memory usage.
+</v-click>
+
+---
+---
+# Reduction Algorithms
+
+SPIN has several optimizations to make verification more *efficient* and more *effective*:
+<v-clicks>
+
+- **partial order reduction**
+    - the validity of a property *does not depend* on the order in which *independent* executed events are *interleaved* so it is sufficient to check one of the possible interleaving
+- **bitstate hashing**
+    - instead of storing the whole state, only one bit of memory is used to store a reachable state 
+- **state vector compression**
+    - instead of storing the whole state, a compressed version of the state is stored
+- **minimization of the Büchi automaton**
+    - states are stored in a deterministic automaton that changes dynamically during the verification process (very memory efficient but really slow) 
+- **dataflow analysis**
+    - SPIN can detect when a variable is not used anymore and remove it from the state space
+</v-clicks>
+
+
+---
 layout: center
 class: "text-center"
 
 ---
-# Basic concepts
+# PROMELA
 ---
 layout: default
 src: ./pages/prom-intro/introduction.md
@@ -270,6 +345,7 @@ class: "text-center"
 # Communication
 
 ---
+hideInToc: true
 ---
 ## Communication
 
@@ -327,7 +403,6 @@ If instead of a variable is provided at least one constant value or an enum valu
 </v-click>
 
 ---
-hideInToc: true
 clicks: 2
 ---
 
@@ -400,7 +475,6 @@ Real total atomicity is obtained with the `d_step` statement
 </v-clicks>
 
 ---
----
 
 ## Time model
 Promela is a **functional language**, so it does not have a time model.
@@ -409,6 +483,7 @@ Promela is a **functional language**, so it does not have a time model.
 However, process often require clock or timeout to resend data
 
 <div>
+  
 This is possible to model using the `timeout` statement
 ```promela
     active proctype Receiver() 
@@ -428,6 +503,7 @@ This is possible to model using the `timeout` statement
 
 
 ---
+hideInToc: true
 ---
 
 <div class="text-left float-left">
