@@ -549,3 +549,99 @@ A *ltl* property should be declared in global scope, like a global variable
 ```
 
 </v-click>
+
+---
+layout: center
+class: "text-center"
+
+---
+# C code
+---
+---
+
+## C Code
+
+Starting from Spin `v4.0` it is possible to use C code in Promela with some limitations
+
+It's primarily used by automatic verification tool, like **Modex** that we will see later, to model complex statement
+<v-clicks>
+<TwoCols>
+<template #left>
+
+- declaration of complex type or struct
+</template>
+<template #right>
+```promela
+    c_decl {<typedef>};
+    c_code {<type> <identifier>};
+    c_track "&<identifier>" "sizeof(<type>)";
+```
+</template>
+</TwoCols>
+<TwoCols>
+<template #left>
+
+- atomic expression 
+</template>
+<template #right>
+```promela
+    c_code {<expr>};
+```
+</template>
+</TwoCols>
+<TwoCols>
+<template #left>
+
+- atomic expression executable only when evaluate to _non zero_ value
+</template>
+<template #right>
+```promela
+    c_expr{<expr>};
+```
+</template>
+</TwoCols>
+<Callout>
+    <template #icon>⚠️</template>
+
+`c_expr` must contain only one statement without any side effect because could be executed multiple times
+
+</Callout>
+</v-clicks>
+---
+---
+## C & Promela
+<v-clicks>
+<div>
+
+- C code could access _global_ identifier declared in Promela using `now` followed by a dot because it refers to the **state vector**
+```promela
+    c_code { now.<identifier> = <expr>; }
+```
+</div>
+<div>
+
+- C code could access _local_ identifier declared inside process using `P` followed by the name of the `proctype` and the pointer arrow because it refers to the **state vector** of the process
+```promela
+    c_code { P<proctypeName>-><identifier> = <expr>; }
+```
+</div>
+
+<div>
+
+- Promela code could access C identifiers declared with `c_decl` after they have been inserted into the state vector.
+This approach substitute the usage of `c_track`
+```promela
+    c_state "<type> <identifier>" "Global|Local";
+```
+</div>
+</v-clicks>
+---
+---
+## Execution
+In order to execute a model that contains some C code instruction we have to use the `gcc` compiler to translate id
+
+```sh
+    $spin -a model.pml 
+    $gcc -o pan pan.c
+    $./pan
+```
