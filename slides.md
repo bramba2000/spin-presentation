@@ -8,13 +8,21 @@ highlighter: shiki
 ---
 
 # SPIN
-## A tool to _**verificate**_ them all
+## A tool to _**verify**_ them all
 
 ---
 layout: table-of-contents
+columns: 2
 hideInToc: true
 ---
 # What are we going to see?
+
+---
+layout: center
+class: "text-center"
+
+---
+# Basic concepts
 ---
 layout: default
 src: ./pages/prom-intro/introduction.md
@@ -23,9 +31,9 @@ src: ./pages/prom-intro/introduction.md
 ---
 ---
 
-# Variable definition
+## Variable definition
 
-- 5 basic types, defaut initialized to `0`
+- 5 basic types, default initialized to `0`
 
 ```promela
     bit turn=1; /*[0..1]*/        bool flag=true; /*[0..1]*/ 
@@ -54,7 +62,7 @@ src: ./pages/prom-intro/introduction.md
 hideInToc: true
 ---
 
-# Variable definition
+## Variable definition
 
 <v-click>
 
@@ -71,7 +79,7 @@ hideInToc: true
 
 <v-click>
 
-- Variables could be used in **assignements** or **expression**
+- Variables could be used in **assignments** or **expression**
 ```promela
     a = 10;
     a = a + 1;
@@ -81,7 +89,7 @@ hideInToc: true
 </v-click>
 ---
 
-# Statements
+## Statements
 
 A statement is a single instruction that can be executed by the program
 <v-clicks>
@@ -89,7 +97,7 @@ A statement is a single instruction that can be executed by the program
 <div>
 
 - **Executable** if it could be executed immediately
-    - Assignements are always executable
+    - Assignments are always executable
 </div>
 
 <div>
@@ -108,12 +116,16 @@ A statement is a single instruction that can be executed by the program
 - `assert(<expr>)` is always executable, but if `<expr>` evaluates to `0` the program stops
 
 </v-clicks>
-
-
+---
+layout: center
+class: "text-center"
 ---
 
-# Processes
-Processes are the main component of a Promela program. They are the basic behavioural unit and are executed **concurrently**. 
+# Modelling behaviour
+---
+
+## Processes
+Processes are the main component of a Promela program. They are the basic behavioral unit and are executed **concurrently**. 
 
 ```promela
     proctype Foo() {
@@ -143,7 +155,7 @@ Processes are the main component of a Promela program. They are the basic behavi
 clicks: 3
 ---
 
-# Hello world
+## Hello world
 ```promela
     /* A "Hello World" Promela model for SPIN. */
     active proctype Hello() {
@@ -167,9 +179,14 @@ clicks: 3
 <arrow v-click="3" x1="130" y1="370" x2="380" y2="240" color="#581845" width="3" arrowSize="1" />
 
 ---
+layout: center
+class: "text-center"
+
+---
+# Control flow
 ---
 
-# `if` statement
+## `if` statement
 
 ```promela
     if
@@ -182,7 +199,7 @@ clicks: 3
 
 <div>
 
-- execute the stamenents of an executable `<expr>`
+- execute the statement of an executable `<expr>`
 </div>
 
 <div>
@@ -228,7 +245,7 @@ The `->` operator is an alias for `;` used to separate the `<expr>` from the `<s
 
 ---
 
-# `do` statement
+## `do` statement
 
 ```promela
     do
@@ -242,13 +259,19 @@ The `->` operator is an alias for `;` used to separate the `<expr>` from the `<s
   
 - works like `if` but at the end of the statement list it restarts from the choice point
 - if no `<expr>` is executable the process is blocked; `else` branch could be provided
-- the `break` stamenent is used to exit the loop
+- the `break` statement is used to exit the loop
 </v-clicks>
 
+---
+layout: center
+class: "text-center"
+---
+
+# Communication
 
 ---
 ---
-# Comunication
+## Communication
 
 The communication between processes is done using **channels**. A channel is a **FIFO** queue of messages. 
 
@@ -265,7 +288,7 @@ The communication between processes is done using **channels**. A channel is a *
 ---
 hideInToc: true
 ---
-# Comunication
+## Communication
 <TwoCols>
 <template #left>
 
@@ -299,7 +322,7 @@ The `<expr>` type must match the message type defined in the `of` clause
 <v-click>
 <br>
 
-If instead of a variable is provided at least one costant value or an enum value, the statement is executable _only if the message attributes match the provided constants_
+If instead of a variable is provided at least one constant value or an enum value, the statement is executable _only if the message attributes match the provided constants_
 <arrow x1="500" y1="420" x2="600" y2="240" color="#581845" width="4" arrowSize="1" />
 </v-click>
 
@@ -308,7 +331,7 @@ hideInToc: true
 clicks: 2
 ---
 
-# Comunication - handshaking
+## Communication - handshaking
 It is possible to use **channels** as synchronization mechanism between processes. The channel size must be `0`
 
 - The sender is blocked until the receiver is ready to receive the message
@@ -325,14 +348,21 @@ It is possible to use **channels** as synchronization mechanism between processe
 ```
 <v-clicks>
     
-- Only when both processes are ready these stamenents are considered executable
+- Only when both processes are ready these statements are considered executable
 </v-clicks>
 
 
 ---
+layout: center
+class: "text-center"
 ---
 
-# Atomic blocks
+# Synchronization concepts
+---
+
+---
+
+## Atomic blocks
 All the single statements are atomic, but it is possible to group them in a block to make them atomic together
 
 ```promela
@@ -345,7 +375,7 @@ All the single statements are atomic, but it is possible to group them in a bloc
 <v-clicks>
 
 - It is executable if the first statement is executable
-- It one of the following statements is not executable, the process is temporarly suspended
+- It one of the following statements is not executable, the process is temporarily suspended
 </v-clicks>
 <p v-after class="color-red absolute top-60 right-45 opacity-70 transform rotate-5">No pure atomicity!</p>
 
@@ -353,7 +383,7 @@ All the single statements are atomic, but it is possible to group them in a bloc
 hideInToc: true
 ---
 
-# Atomic blocks
+## Atomic blocks
 Real total atomicity is obtained with the `d_step` statement
 
 ```promela
@@ -372,7 +402,7 @@ Real total atomicity is obtained with the `d_step` statement
 ---
 ---
 
-# Time model
+## Time model
 Promela is a **functional language**, so it does not have a time model.
 <v-clicks>
 
@@ -412,7 +442,7 @@ Goto is used as unconditional jump to a label
 
 - `label` is an identifier that precedes a statement
 - `goto` jump to the label and executes the statement
-- Useful to model _comunication protocols_
+- Useful to model _communication protocols_
 </div>
 <div class="color-red absolute top-10 right-10 ">
 
@@ -449,28 +479,40 @@ wait_ack:
 </v-click>
 
 ---
+layout: center
+class: "text-center"
 ---
-# LTL formula
+
+# LTL logic
+
+---
+---
+## LTL formula
+
+<br>
 ```promela
     ltl ::= opd | ( ltl ) | ltl binop ltl | unop ltl
 ```
+<br>
 <v-clicks>
 
 - `opd` is an operand
 - `unop` is a unary operator
     - `[]` is the **globally** operator $\square$
     - `<>` is the **eventually** operator $\diamond$
-    - `!` is the **negation** operator$\neg$
+    - `!` is the **negation** operator $\neg$
 
 </v-clicks>
 ---
 hideInToc: true
 ---
 
-# LTL formula
+## LTL formula
+<br>
 ```promela
     ltl ::= opd | ( ltl ) | ltl binop ltl | unop ltl
 ```
+<br>
 
 - `opd` is an operand
 - `unop` is a unary operator
@@ -486,7 +528,7 @@ hideInToc: true
 ---
 ---
 
-# LTL usage
+## LTL usage
 A *ltl* property should be declared in global scope, like a global variable 
 
 ```promela

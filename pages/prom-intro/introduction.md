@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Promela language
+## Promela language
 C-like language for modeling concurrent systems
 
 <v-click>
@@ -35,7 +35,7 @@ C-like language for modeling concurrent systems
 hideInToc: true
 ---
 
-# Promela language
+## Promela language
 C-like language for modeling concurrent systems
 
 - **Identifiers** are strings of letters, digits and underscores, starting with a letter, `.` or `_` 
