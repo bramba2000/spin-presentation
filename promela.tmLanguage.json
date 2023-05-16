@@ -103,8 +103,13 @@
     },
     {
       "comment": "I don't know where to put these",
-      "match": "\\b(typedef|c_state)\\b",
+      "match": "\\b(typedef)\\b",
       "name": "storage.modifier"
+    },
+    {
+      "comment": "C instruction wrapping",
+      "match": "\\b(c_state|c_code|c_expr|c_decl|c_track)\\b",
+      "name": "support.other"
     },
     {
       "comment": "Line comment",
