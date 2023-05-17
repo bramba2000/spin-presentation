@@ -131,6 +131,15 @@ src: ./pages/prom-intro/introduction.md
 ```promela
     mtype = {A, B, C};
     mtype d;
+    mtype:fruits = {apple, banana, pear};
+```
+</v-click>
+
+<v-click>
+
+- Variable size integer could be declared with `unsigned`
+```promela
+    unsigned x : 5 = 10
 ```
 </v-click>
 ---
@@ -154,7 +163,7 @@ hideInToc: true
 
 <v-click>
 
-- Variables could be used in **assignments** or **expression**
+- Variables could be used in **assignments** or **expressions**
 ```promela
     a = 10;
     a = a + 1;
@@ -162,6 +171,8 @@ hideInToc: true
 ```
 
 </v-click>
+
+
 ---
 
 ## Statements
@@ -171,14 +182,14 @@ A statement is a single instruction that can be executed by the program
 
 <div>
 
-- **Executable** if it could be executed immediately
+- **Executable** if it can be executed immediately
     - Assignments are always executable
 </div>
 
 <div>
 
 - **Blocked** if it cannot
-    - Expression are blocked if they evaluate to `0`
+    - Expressions are blocked if they evaluate to `0`
 </div>
 
 ```promela
@@ -187,10 +198,12 @@ A statement is a single instruction that can be executed by the program
     3 + x   //executable if x is not equal to –3
 ```
 
-- `skip` is always executable, just change process counter(more later)
-- `assert(<expr>)` is always executable, but if `<expr>` evaluates to `0` the program stops
+- `skip` is always executable, it just cause the process counter to go one step forward
+- `assert(<expr>)` is always executable, but if `<expr>` evaluates to `0` the program stops with an exception
 
 </v-clicks>
+
+
 ---
 layout: center
 class: "text-center"
@@ -332,10 +345,11 @@ The `->` operator is an alias for `;` used to separate the `<expr>` from the `<s
 ```
 <v-clicks>
   
-- works like `if` but at the end of the statement list it restarts from the choice point
+- works like `if`, but at the end of the statements list it restarts from the choice point
 - if no `<expr>` is executable the process is blocked; `else` branch could be provided
 - the `break` statement is used to exit the loop
 </v-clicks>
+
 
 ---
 layout: center
@@ -347,6 +361,7 @@ class: "text-center"
 ---
 hideInToc: true
 ---
+
 ## Communication
 
 The communication between processes is done using **channels**. A channel is a **FIFO** queue of messages. 
@@ -359,11 +374,17 @@ The communication between processes is done using **channels**. A channel is a *
 
 - The channel must have a **bounded size**
 - The message structure supported by the channel is defined in the `of` clause
+- A channel could be used for two-way communication
+- Using the same channel for communication between multiple process could be tricky
+  - use `xr` to assert exclusive reading
+  - use `xs` to assert exclusive writing
 </v-clicks>
+
 
 ---
 hideInToc: true
 ---
+
 ## Communication
 <TwoCols>
 <template #left>
@@ -397,10 +418,11 @@ The `<expr>` type must match the message type defined in the `of` clause
 
 <v-click>
 <br>
-
-If instead of a variable is provided at least one constant value or an enum value, the statement is executable _only if the message attributes match the provided constants_
-<arrow x1="500" y1="420" x2="600" y2="240" color="#581845" width="4" arrowSize="1" />
+  
+If one constant or enum value is provided, instead of a variable, the statement is executable _only if the message attributes match the provided constants_
+<arrow x1="500" y1="400" x2="600" y2="240" color="#581845" width="4" arrowSize="1" />
 </v-click>
+
 
 ---
 clicks: 2
@@ -435,7 +457,6 @@ class: "text-center"
 # Synchronization concepts
 
 ---
----
 
 ## Atomic blocks
 All the single statements are atomic, but it is possible to group them in a block to make them atomic together
@@ -450,9 +471,10 @@ All the single statements are atomic, but it is possible to group them in a bloc
 <v-clicks>
 
 - It is executable if the first statement is executable
-- It one of the following statements is not executable, the process is temporarily suspended
+- If one of the following statements isn't executable, then process is temporarily suspended
 </v-clicks>
 <p v-after class="color-red absolute top-60 right-45 opacity-70 transform rotate-5">No pure atomicity!</p>
+
 
 ---
 hideInToc: true
@@ -471,8 +493,9 @@ Real total atomicity is obtained with the `d_step` statement
 <v-clicks>
 
 - It is executable if the first statement is executable
-- It one of the following statements is not executable generates a <span class="color-red">runtime error</span>
+- If one of the following statements is not executable, then generates a <span class="color-red">runtime error</span>
 </v-clicks>
+
 
 ---
 
@@ -721,3 +744,9 @@ In order to execute a model that contains some C code instruction we have to use
     $gcc -o pan pan.c
     $./pan
 ```
+---
+layout: center
+class: "text-center"
+
+---
+# Questions?
