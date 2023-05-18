@@ -747,6 +747,6 @@ In order to execute a model that contains some C code instruction we have to use
 ---
 layout: center
 class: "text-center"
-
+hideInToc: true
 ---
 # Questions?
